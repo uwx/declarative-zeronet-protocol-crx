@@ -1,11 +1,13 @@
-**Status: Abandoned** (I won't be working on this project anymore).
+**Status: Spaghetti**.
 
 **ZeroNet Protocol**
 -----------------------------
 
 ZeroNet Protocol is a Chrome extension, helps you to browse ZeroNet websites without http://127.0.0.1:43110
 
-Extension is available in Chrome WebStore: https://chrome.google.com/webstore/detail/zeronet-protocol/cpkpdcdljfbnepgfejplkhdnopniieop
+This fork also redirects you to .bit and .zero domains if we have an url like http://127.0.0.1:43110/0list.bit
+
+**Original** Extension is available in Chrome WebStore: https://chrome.google.com/webstore/detail/zeronet-protocol/cpkpdcdljfbnepgfejplkhdnopniieop
 
 **Demo**
 -----------------------------
@@ -17,6 +19,10 @@ After installing this extension, visit:
 
 [http://board.zeronetwork.bit/](http://board.zeronetwork.bit/)
 
+[http://127.0.0.1:43110/0list.bit/](http://127.0.0.1:43110/0list.bit/)
+
+[http://127.0.0.1:43110/1Gif7PqWTzVWDQ42Mo7np3zXmGAo3DXc7h](http://127.0.0.1:43110/1Gif7PqWTzVWDQ42Mo7np3zXmGAo3DXc7h)
+
 **How To Install this Extension**
 -----------------------------
 
@@ -26,9 +32,6 @@ After installing this extension, visit:
 4. Click Load unpacked extension… to pop up a file-selection dialog.
 5. Navigate to the directory in which your extension files live, and select it.
 
-Or
-
-Get it from Chrome WebStore https://chrome.google.com/webstore/detail/zeronet-protocol/cpkpdcdljfbnepgfejplkhdnopniieop
 
 **To Do**
 -----------------------------
