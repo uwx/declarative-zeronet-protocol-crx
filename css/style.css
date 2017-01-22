@@ -1,28 +1,61 @@
-body
-{
+body {
     min-width: 450px;
     min-height: 300px;
     overflow-x: hidden;
     background-color: #FFFFFF;
-    font-family: Arial, Verdana;
-    color: #000000;
-    font-size: 12px;
+    font-family: sans-serif;
+    color: #2f2f2f;
+    font-size: 1em;
     margin: 10px
 }
 
-.title-header
-{
-	font-size: 16px;
-	font-weight: bold;
-	
+.title-header {
+    font-size: 2em;
+    font-weight: bold;
 }
 
-.hr
-{
-	margin-top: 10px;
-	margin-bottom: 20px;
+body {
+  margin: 0;
+  padding: 50px;
+  height: 100%;
+  background-color: #D2CECD;
+  overflow: hidden
+}
 
-	height: 1px;
-	display: block;
-	background-color: #000;
+body.back {
+  background-color: #090909
+}
+
+a {
+  color: black
+}
+
+.input {
+    padding: 6px;
+    border: 1px solid #DDD;
+    margin-left: 10px;
+    border-bottom: 2px solid #DDD;
+    border-radius: 1px;
+    margin-right: -5px;
+    transition: all 0.3s;
+    background-color: #8f8f8f;
+}
+
+.input:focus {
+    border-color: #95a5a6;
+    outline: none
+}
+
+input[type="button"] {
+  background: #AF3BFF !important;
+  color:white;
+  border-radius:5px;
+  text-shadow: 1px 1px 1px #4f4f4f;
+  border:none;
+}
+
+input[type="button"]:focus {
+  color:#2f2f2f !important;
+  border-radius:5px;
+  border:none;
 }

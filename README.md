@@ -1,4 +1,4 @@
-**Status: Spaghetti**.
+**Status: Forked**.
 
 **ZeroNet Protocol**
 -----------------------------

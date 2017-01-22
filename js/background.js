@@ -3,149 +3,134 @@
  * @author Karthikeyan VJ
  */
 
-function onBeforeRequest(details)
-{
-	var currentURLRequest = document.createElement('a');
-	currentURLRequest.href = details.url;
+function onBeforeRequest(details) {
+  var currentURLRequest = document.createElement('a');
+  currentURLRequest.href = details.url;
 
-	//console.log("hostname " + currentURLRequest.hostname +", protocol " + currentURLRequest.protocol, "url " + currentURLRequest.href);
+  //console.log("hostname " + currentURLRequest.hostname +", protocol " + currentURLRequest.protocol, "url " + currentURLRequest.href);
 
-	var isZeroTLD = false;
-	var isZeroHost = false;
+  var isZeroTLD = false;
+  var isZeroHost = false;
 
-	// tld
-	for (var i = 0; i < ZERO_ACCEPTED_TLDS.length; i++)
-	{
-		var currentTLD = currentURLRequest.hostname.slice(-ZERO_ACCEPTED_TLDS[i].length);
-		if (currentTLD == ZERO_ACCEPTED_TLDS[i])
-		{
-			isZeroTLD =  true;
-			break;
-		}
-	}
+  // tld
+  for (var i = 0; i < ZERO_ACCEPTED_TLDS.length; i++) {
+    var currentTLD = currentURLRequest.hostname.slice(-ZERO_ACCEPTED_TLDS[i].length);
+    if (currentTLD == ZERO_ACCEPTED_TLDS[i]) {
+      isZeroTLD = true;
+      break;
+    }
+  }
 
-	// host
-	var currentHost = currentURLRequest.host.toLowerCase();
-	for (i = 0; i < ZERO_ACCEPTED_HOSTS.length; i++)
-	{
-		if (currentHost == ZERO_ACCEPTED_HOSTS[i])
-		{
-			isZeroHost =  true;
-			break;
-		}
-	}
+  // host
+  var currentHost = currentURLRequest.host.toLowerCase();
+  for (i = 0; i < ZERO_ACCEPTED_HOSTS.length; i++) {
+    if (currentHost == ZERO_ACCEPTED_HOSTS[i]) {
+      isZeroHost = true;
+      break;
+    }
+  }
 
-	if (isZeroTLD == false && isZeroHost == false)
-	{
-		// not a zeroNet TLD or Host, return immediately
-		return;
-	}
+  if (isZeroTLD === false && isZeroHost === false) {
+    // not a zeroNet TLD or Host, return immediately
+    return;
+  }
 
-	// My spaghetti to redirect to .bit domain if present in url
-	for (i = 0; i < ZERO_ACCEPTED_HOSTS.length; i++)
-	{
-		if (currentHost == ZERO_ACCEPTED_HOSTS[i])
-		{
-			var withoutHost = currentURLRequest.href.split(ZERO_ACCEPTED_HOSTS[i])[1]; // Remove only the host
-			var subFolder = withoutHost.split("/")[1]; // First subfolder. i.e.: http://zero/foo/bar/thing -> foo
-			for (var i = 0; i <= ZERO_ACCEPTED_TLDS.length; i++)
-			{
-				// If withoutHost (removed slashes) and subFolder are the same,
-				// it's not trying to load an another file. Exclude favicon too.
-				if (withoutHost.replace(/\//g, '') == subFolder && subFolder != "favicon.ico")
-				{
-					// exclude "zero"... except if you like infinite loops.
-					if (i == ZERO_ACCEPTED_TLDS.length && currentHost != "zero")
-					{
-						//console.log("nothing was found");
-						// If it has looped through all .bit or .zero possibilities, this becomes true
-						var newPath = "http://zero" + withoutHost;
-						if (newPath != undefined) chrome.tabs.update({url: newPath});
-					}
-					else
-					{
-						var newTLD = subFolder.slice(-ZERO_ACCEPTED_TLDS[i].length);
-						if (newTLD == ZERO_ACCEPTED_TLDS[i])
-						{
-							var newPath = "http://" + subFolder + currentURLRequest.href.split(newTLD)[1];
-							if (newPath != undefined) chrome.tabs.update({url: newPath});
-							break;
-						}
-					}
-				}
-			}
-		}
-	}
+  // My spaghetti to redirect to .bit domain if present in url
+  for (i = 0; i < ZERO_ACCEPTED_HOSTS.length; i++) {
+    if (currentHost == ZERO_ACCEPTED_HOSTS[i]) {
+      var withoutHost = currentURLRequest.href.split(ZERO_ACCEPTED_HOSTS[i])[1]; // Remove only the host
+      var subFolder = withoutHost.split("/")[1]; // First subfolder. i.e.: http://zero/foo/bar/thing -> foo
+      for (i = 0; i <= ZERO_ACCEPTED_TLDS.length; i++) {
+        // If withoutHost (removed slashes) and subFolder are the same,
+        // it's not trying to load an another file. Exclude favicon too.
+        if (withoutHost.replace(/\//g, '') == subFolder && subFolder != "favicon.ico") {
+          // exclude "zero"... except if you like infinite loops.
+          if (i == ZERO_ACCEPTED_TLDS.length && currentHost != "zero") {
+            //console.log("nothing was found");
+            // If it has looped through all .bit or .zero possibilities, this becomes true
+            var newPath = "http://zero" + withoutHost;
+            if (newPath !== undefined) chrome.tabs.update({
+              url: newPath
+            });
+          } else {
+            var newTLD = subFolder.slice(-ZERO_ACCEPTED_TLDS[i].length);
+            if (newTLD == ZERO_ACCEPTED_TLDS[i]) {
+              var newPath2 = "http://" + subFolder + currentURLRequest.href.split(newTLD)[1];
+              if (newPath2 !== undefined) chrome.tabs.update({
+                url: newPath2
+              });
+              break;
+            }
+          }
+        }
+      }
+    }
+  }
 
-	//console.log("on before request! ", details);
-	//console.log("hostname " + currentURLRequest.hostname +", protocol " + currentURLRequest.protocol, "url " + currentURLRequest.href);
+  //console.log("on before request! ", details);
+  //console.log("hostname " + currentURLRequest.hostname +", protocol " + currentURLRequest.protocol, "url " + currentURLRequest.href);
 
-	// get data from local storage
-	chrome.storage.local.get(function(item)
-    {
-        //console.log(item);
-        handleProxy(item.zeroHostData);
-    });
+  // get data from local storage
+  chrome.storage.local.get(function (item) {
+    //console.log(item);
+    handleProxy(item.zeroHostData);
+  });
 
 }
 
-function handleProxy(zeroHostData)
-{
-	//console.log("handle proxy " + zeroHostData);
-	zeroHostData = zeroHostData || DEFAULT__ZERO_HOST_DATA;
+function handleProxy(zeroHostData) {
+  //console.log("handle proxy " + zeroHostData);
+  zeroHostData = zeroHostData || DEFAULT__ZERO_HOST_DATA;
 
-	var config = getPacConfig(zeroHostData);
+  var config = getPacConfig(zeroHostData);
 
-	chrome.proxy.settings.set(
-		{
-			value: config,
-			scope: "regular"
-		},
-		function() {
-			//console.log("proxy set done!");
-		}
-	);
+  chrome.proxy.settings.set({
+      value: config,
+      scope: "regular"
+    },
+    function () {
+      //console.log("proxy set done!");
+    }
+  );
 
 }
 
 
-function getPacConfig(zeroHostData)
-{
-	//console.log("getPacConfig " + zeroHostData);
-	var pacConfigWithLocalHost = {
-		mode: "pac_script",
-		pacScript: {
-			data: "function FindProxyForURL(url, host) {\n" +
-			"  if (shExpMatch(host, '*.bit') || shExpMatch(host, '*.zero') || host == 'zero' || shExpMatch(url, '*127.0.0.1:43110*') || shExpMatch(url, '*localhost:43110*'))\n" +
-			"    return 'PROXY " + zeroHostData + "';\n" +
-			"  return 'DIRECT';\n" +
-			"}"
-		}
+function getPacConfig(zeroHostData) {
+  //console.log("getPacConfig " + zeroHostData);
+  var pacConfigWithLocalHost = {
+    mode: "pac_script",
+    pacScript: {
+      data: "function FindProxyForURL(url, host) {\n" +
+        "  if (shExpMatch(host, '*.bit') || shExpMatch(host, '*.zero') || host == 'zero' || shExpMatch(url, '*127.0.0.1:43110*') || shExpMatch(url, '*localhost:43110*'))\n" +
+        "    return 'PROXY " + zeroHostData + "';\n" +
+        "  return 'DIRECT';\n" +
+        "}"
+    }
 
-	};
+  };
 
-	var pacConfig = {
-		mode: "pac_script",
-		pacScript: {
-			data: "function FindProxyForURL(url, host) {\n" +
-			"  if (shExpMatch(host, '*.bit') || shExpMatch(host, '*.zero') || host == 'zero')\n" +
-			"    return 'PROXY " + zeroHostData + "';\n" +
-			"  return 'DIRECT';\n" +
-			"}"
-		}
+  var pacConfig = {
+    mode: "pac_script",
+    pacScript: {
+      data: "function FindProxyForURL(url, host) {\n" +
+        "  if (shExpMatch(host, '*.bit') || shExpMatch(host, '*.zero') || host == 'zero')\n" +
+        "    return 'PROXY " + zeroHostData + "';\n" +
+        "  return 'DIRECT';\n" +
+        "}"
+    }
 
-	};
+  };
 
-	if(zeroHostData != DEFAULT__ZERO_HOST_DATA)
-	{
-		// user is running ZeroNet in remote machine
-		// we can proxy 127.0.0.1:43110 and localhost:43110 to go through remote machine
-		return pacConfigWithLocalHost;
-	}
+  if (zeroHostData != DEFAULT__ZERO_HOST_DATA) {
+    // user is running ZeroNet in remote machine
+    // we can proxy 127.0.0.1:43110 and localhost:43110 to go through remote machine
+    return pacConfigWithLocalHost;
+  }
 
-	// user is ZeroNet running in his/her current machine, so we can't proxy 127.0.0.1:43110 connections
-	// will end in infinite loop.
-	return pacConfig;
+  // user is ZeroNet running in his/her current machine, so we can't proxy 127.0.0.1:43110 connections
+  // will end in infinite loop.
+  return pacConfig;
 }
 
 var ZERO_ACCEPTED_TLDS = [".zero", ".bit"]; // if you modify this also change pacScript (sorry)
@@ -154,7 +139,9 @@ var ZERO_ACCEPTED_HOSTS = ["zero", "127.0.0.1:43110", "localhost:43110"]; // if 
 // default settings data - location where your zeroNet is running
 var DEFAULT__ZERO_HOST_DATA = "127.0.0.1:43110";
 
-var filter = { urls: ["<all_urls>"] };
+var filter = {
+  urls: ["<all_urls>"]
+};
 var opt_extraInfoSpec = ["blocking"];
 
 chrome.webRequest.onBeforeRequest.addListener(onBeforeRequest, filter, opt_extraInfoSpec);
@@ -163,34 +150,35 @@ chrome.webRequest.onBeforeRequest.addListener(onBeforeRequest, filter, opt_extra
 // remove and add the extension again
 
 // proxy error listener
-chrome.proxy.onProxyError.addListener(function(details){
-	console.log(details);
+chrome.proxy.onProxyError.addListener(function (details) {
+  console.log(details);
 });
 
 /**
  * Invoked when action button is clicked
  */
-chrome.browserAction.onClicked.addListener(function() {
+chrome.browserAction.onClicked.addListener(function () {
 
-	chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-		//console.log(tabs);
-		var activeTab = tabs[0];
-		var inNewTab = (activeTab.url != "chrome://newtab/");
-		openZeroHomePage(inNewTab);
-	});
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, function (tabs) {
+    //console.log(tabs);
+    var activeTab = tabs[0];
+    var inNewTab = (activeTab.url != "chrome://newtab/");
+    openZeroHomePage(inNewTab);
+  });
 });
 
-function openZeroHomePage(inNewTab)
-{
-	if (inNewTab)
-	{
-		chrome.tabs.create({
-			url: "http://zero/"
-		});
-	}
-	else
-	{
-		chrome.tabs.update({url: 'http://zero'});
-	}
+function openZeroHomePage(inNewTab) {
+  if (inNewTab) {
+    chrome.tabs.create({
+      url: "http://zero/"
+    });
+  } else {
+    chrome.tabs.update({
+      url: 'http://zero'
+    });
+  }
 
 }

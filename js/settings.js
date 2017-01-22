@@ -1,76 +1,70 @@
-var Settings = (function () 
-{
-    
-    function Settings() 
-    {
-    	// constructor        
-        this.DEFAULT_IP = "127.0.0.1";
-        this.DEFAULT_PORT = "43110";
+var Settings = (function () {
 
-		this.ipTextField = document.getElementById("js-ip_tf");
-		this.ipTextField.placeholder = this.DEFAULT_IP;
+  function Settings() {
+    // constructor
+    this.DEFAULT_IP = "127.0.0.1";
+    this.DEFAULT_PORT = "43110";
 
-		this.portTextField = document.getElementById("js-port_tf");
-		this.portTextField.placeholder = this.DEFAULT_PORT;
+    this.ipTextField = document.getElementById("js-ip_tf");
+    this.ipTextField.placeholder = this.DEFAULT_IP;
 
-		// map binds
-		this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
-		this.onClearButtonClick = this.onClearButtonClick.bind(this);
-		this.updateCurrentValues = this.updateCurrentValues.bind(this);
+    this.portTextField = document.getElementById("js-port_tf");
+    this.portTextField.placeholder = this.DEFAULT_PORT;
 
-		this.updateCurrentValues();
+    // map binds
+    this.onSaveButtonClick = this.onSaveButtonClick.bind(this);
+    this.onClearButtonClick = this.onClearButtonClick.bind(this);
+    this.updateCurrentValues = this.updateCurrentValues.bind(this);
 
-		// to clear local storage - useful for dev
-		//chrome.storage.local.clear();
+    this.updateCurrentValues();
 
-        var saveButton = document.getElementById("js-save_btn");
-        saveButton.addEventListener("click", this.onSaveButtonClick);
+    // to clear local storage - useful for dev
+    //chrome.storage.local.clear();
 
-        var clearButton = document.getElementById("js-clear_btn");
-        clearButton.addEventListener("click", this.onClearButtonClick);
-    }
+    var saveButton = document.getElementById("js-save_btn");
+    saveButton.addEventListener("click", this.onSaveButtonClick);
 
-    Settings.prototype.onSaveButtonClick = function(event)
-    {
-    	var zeroHostData = this.ipTextField.value.trim() === "" ? this.DEFAULT_IP : this.ipTextField.value;
-    	zeroHostData += ":" + (this.portTextField.value.trim() === "" ? this.DEFAULT_PORT : this.portTextField.value);
+    var clearButton = document.getElementById("js-clear_btn");
+    clearButton.addEventListener("click", this.onClearButtonClick);
+  }
 
-    	chrome.storage.local.set({ "zeroHostData" : zeroHostData }, function()
-        {
-        	alert("Saved!");            
-        });
-    	
-    };
+  Settings.prototype.onSaveButtonClick = function () {
+    var zeroHostData = this.ipTextField.value.trim() === "" ? this.DEFAULT_IP : this.ipTextField.value;
+    zeroHostData += ":" + (this.portTextField.value.trim() === "" ? this.DEFAULT_PORT : this.portTextField.value);
 
-    Settings.prototype.onClearButtonClick = function(event)
-    {
-    	this.ipTextField.value = "";
-	    this.portTextField.value = "";
-    };
+    chrome.storage.local.set({
+      "zeroHostData": zeroHostData
+    }, function () {
+      window.close()
+      alert("Saved!");
+    });
 
-    Settings.prototype.updateCurrentValues = function()
-    {
-    	var thisObject = this;
-    	chrome.storage.local.get(function(item)
-	    {
-	        console.log(item.zeroHostData);        
-	        if(item && item.zeroHostData !== undefined)
-	        {
-	        	var data = item.zeroHostData.split(':');
-	        	thisObject.ipTextField.value = data[0];
-	        	thisObject.portTextField.value = data[1];
-	        }
-	        
-	    });
-    };
+  };
 
-    return Settings;
+  Settings.prototype.onClearButtonClick = function () {
+    this.ipTextField.value = "";
+    this.portTextField.value = "";
+  };
+
+  Settings.prototype.updateCurrentValues = function () {
+    var thisObject = this;
+    chrome.storage.local.get(function (item) {
+      console.log(item.zeroHostData);
+      if (item && item.zeroHostData !== undefined) {
+        var data = item.zeroHostData.split(':');
+        thisObject.ipTextField.value = data[0];
+        thisObject.portTextField.value = data[1];
+      }
+
+    });
+  };
+
+  return Settings;
 })();
 
 window.addEventListener("load", onLoadComplete);
 
-function onLoadComplete(event)
-{
-	//alert("done");
-	new Settings();
+function onLoadComplete() {
+  //alert("done");
+  new Settings();
 }
