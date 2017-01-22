@@ -41,9 +41,45 @@ function onBeforeRequest(details)
 		return;
 	}
 
-	//console.log("on before request! ", details);	
+	// My spaghetti to redirect to .bit domain if present in url
+	for (i = 0; i < ZERO_ACCEPTED_HOSTS.length; i++)
+	{
+		if (currentHost == ZERO_ACCEPTED_HOSTS[i])
+		{
+			var withoutHost = currentURLRequest.href.split(ZERO_ACCEPTED_HOSTS[i])[1]; // Remove only the host
+			var subFolder = withoutHost.split("/")[1]; // First subfolder. i.e.: http://zero/foo/bar/thing -> foo
+			for (var i = 0; i <= ZERO_ACCEPTED_TLDS.length; i++)
+			{
+				// If withoutHost (removed slashes) and subFolder are the same,
+				// it's not trying to load an another file. Exclude favicon too.
+				if (withoutHost.replace(/\//g, '') == subFolder && subFolder != "favicon.ico")
+				{
+					// exclude "zero"... except if you like infinite loops.
+					if (i == ZERO_ACCEPTED_TLDS.length && currentHost != "zero")
+					{
+						//console.log("nothing was found");
+						// If it has looped through all .bit or .zero possibilities, this becomes true
+						var newPath = "http://zero" + withoutHost;
+						if (newPath != undefined) chrome.tabs.update({url: newPath});
+					}
+					else
+					{
+						var newTLD = subFolder.slice(-ZERO_ACCEPTED_TLDS[i].length);
+						if (newTLD == ZERO_ACCEPTED_TLDS[i])
+						{
+							var newPath = "http://" + subFolder + currentURLRequest.href.split(newTLD)[1];
+							if (newPath != undefined) chrome.tabs.update({url: newPath});
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//console.log("on before request! ", details);
 	//console.log("hostname " + currentURLRequest.hostname +", protocol " + currentURLRequest.protocol, "url " + currentURLRequest.href);
-	
+
 	// get data from local storage
 	chrome.storage.local.get(function(item)
     {
@@ -53,7 +89,7 @@ function onBeforeRequest(details)
 
 }
 
-function handleProxy(zeroHostData) 
+function handleProxy(zeroHostData)
 {
 	//console.log("handle proxy " + zeroHostData);
 	zeroHostData = zeroHostData || DEFAULT__ZERO_HOST_DATA;
