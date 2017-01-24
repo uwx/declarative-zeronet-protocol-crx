@@ -4,6 +4,7 @@
 <head>
   <title>ZeroNet Settings</title>
   <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <script src="js/jquery-3.1.1.slim.min.js"></script>
   <script src="js/settings.js"></script>
 
 </head>
@@ -18,22 +19,29 @@
 
     <br>
 
+    <div id="error">
+      <div id="err"></div>
+    </div>
+
+    <br>
+    
     <div class="content">
       <div>
-        IP Address: <input type="text" class="input" id="js-ip_tf" style="margin-left: 10px;">
+        IP Address: <input type="text" placeholder="127.0.0.1" class="input" id="ip_field" style="margin-left: 10px;">
       </div>
 
       <br>
 
       <div>
-        Port: <input type="text" class="input" id="js-port_tf" style="margin-left: 10px;">
+        Port: <input type="text" placeholder="43110" class="input" id="port_field" style="margin-left: 10px;">
       </div>
     </div>
 
     <br><br>
+
     <div>
-      <button id="js-save_btn">Save</button>
-      <button id="js-clear_btn">Clear</button>
+      <button id="btn_save">Save</button>
+      <button id="btn_clear">Clear</button>
     </div>
 
   </div>

@@ -21,3 +21,14 @@ button {
 .content {
   margin-left: 16px;
 }
+
+#error {
+  background: rgba(255, 0, 0, 0.4);
+  display: none;
+}
+
+#err {
+  font-weight: bold;
+  color: darkred;
+  padding: 10px;
+}
