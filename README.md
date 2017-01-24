@@ -6,6 +6,7 @@
 ZeroNet Protocol is a Chrome extension, helps you to browse ZeroNet websites without http://127.0.0.1:43110
 
 This fork also redirects you to .bit and .zero domains if we have an url like http://127.0.0.1:43110/0list.bit
+and allows to make the .zero TLD optional (ToDo).
 
 **Original** Extension is available in Chrome WebStore: https://chrome.google.com/webstore/detail/zeronet-protocol/cpkpdcdljfbnepgfejplkhdnopniieop
 
@@ -33,8 +34,9 @@ After installing this extension, visit:
 5. Navigate to the directory in which your extension files live, and select it.
 
 
-**To Do**
+**ToDo**
 -----------------------------
 
-1. Beautify settings page
-2. Do a ping test when settings info is saved
+- [x] Beautify settings page
+- [ ] Do a ping test when settings info is saved
+- [ ] Make the .zero TLD optional
