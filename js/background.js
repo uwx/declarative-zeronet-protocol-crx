@@ -238,11 +238,12 @@ function getPacConfig(zeroHostData) {
     //console.log("pac",ar,res)
     return res;
   }
+  console.log("pacmatch",ZERO_ACCEPTED_TLDS.map((h) => {return "*"+h}))
   var pacConfigWithLocalHost = {
     mode: "pac_script",
     pacScript: {
       data: createMatches(
-        ZERO_ACCEPTED_TLDS.map((h) => {return "*"+h})
+        ZERO_ACCEPTED_TLDS.map((h) => {return "*"+h}).concat("zero") //Proxy "zero" too
         )
     }
 
@@ -254,7 +255,7 @@ function getPacConfig(zeroHostData) {
       data:createMatches(
         ZERO_ACCEPTED_TLDS.map((h) => {return "*"+h})
           .concat(ZERO_ACCEPTED_HOSTS
-            .map((h) => {return "*"+h+"*"})
+            .map((h) => {return h})
           )
         )
     }
@@ -264,15 +265,15 @@ function getPacConfig(zeroHostData) {
   if (zeroHostData != DEFAULT__ZERO_HOST_DATA) {
     // user is running ZeroNet in remote machine
     // we can proxy 127.0.0.1:43110 and localhost:43110 to go through remote machine
-    return pacConfigWithLocalHost;
+    return pacConfig;
   }
 
   // user is ZeroNet running in his/her current machine, so we can't proxy 127.0.0.1:43110 connections
   // will end in infinite loop.
-  return pacConfig;
+  return pacConfigWithLocalHost;
 }
 
-var ZERO_ACCEPTED_TLDS = [".zero", ".bit", ".zite"]; // All tlds (beware .zero is now an offical tld - soon optional)
+var ZERO_ACCEPTED_TLDS = [/*".zero", */".bit", ".zite"]; // All tlds (beware .zero is now an offical tld - soon optional)
 var ZERO_ACCEPTED_HOSTS = ["zero", "127.0.0.1:43110", "localhost:43110"]; // All hosts (zero must be included here)
 
 // default settings data - location where your zeroNet is running

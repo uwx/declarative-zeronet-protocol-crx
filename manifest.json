@@ -3,7 +3,7 @@
   "name": "ZeroNet Protocol",
   "short_name": "ZeroNet",
   "description": "ZeroNet Protocol",
-  "version": "0.3",
+  "version": "0.4",
   "permissions": [ "tabs", "proxy", "webRequest", "webRequestBlocking", "*://*.bit/*", "*://*.zero/*", "*://*.zite/*", "*://zero/*", "http://127.0.0.1/*", "http://127.0.0.1:43110/*", "http://localhost/*", "storage" ],
 
   "icons": {
