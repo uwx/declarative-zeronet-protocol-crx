@@ -238,7 +238,7 @@ function getPacConfig(zeroHostData) {
     //console.log("pac",ar,res)
     return res;
   }
-  console.log("pacmatch",ZERO_ACCEPTED_TLDS.map((h) => {return "*"+h}))
+  //console.log("pacmatch",ZERO_ACCEPTED_TLDS.map((h) => {return "*"+h}))
   var pacConfigWithLocalHost = {
     mode: "pac_script",
     pacScript: {
