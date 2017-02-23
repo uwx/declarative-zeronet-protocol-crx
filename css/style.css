@@ -14,21 +14,21 @@
 }
 
 button {
-  border:none;
-  border-radius:6px;
+    border: none;
+    border-radius: 6px;
 }
 
 .content {
-  margin-left: 16px;
+    margin-left: 16px;
 }
 
 #error {
-  background: rgba(255, 0, 0, 0.4);
-  display: none;
+    background: rgba(255, 0, 0, 0.4);
+    display: none;
 }
 
 #err {
-  font-weight: bold;
-  color: darkred;
-  padding: 10px;
+    font-weight: bold;
+    color: darkred;
+    padding: 10px;
 }

@@ -123,9 +123,12 @@ function onBeforeRequest(details) {
       oldUrl: currentURLRequest.href,
       newUrl
     }, "onRequestUpdate")
-    if (newUrl !== undefined) chrome.tabs.update({
-      url: newUrl
-    });
+    if (newUrl !== undefined) return {
+      redirectUrl: newUrl
+    }
+    /*chrome.tabs.update({
+         url: newUrl
+       });*/
   }
 
   showInfo(currentURLRequest, "onBeforeRequest")
@@ -227,14 +230,14 @@ function handleProxy(zeroHostData, url) {
 function getPacConfig(zeroHostData) {
   //console.log("getPacConfig " + zeroHostData);
   function createMatches(ar) {
-    var res="function FindProxyForURL(url, host) {"
-    res+="if ("
+    var res = "function FindProxyForURL(url, host) {"
+    res += "if ("
     ar.map((h) => {
-      res+="shExpMatch(host, '"+h+"')||"
+      res += "shExpMatch(host, '" + h + "')||"
     })
-    res+="false" //end the ||
-    res+=") return 'PROXY " + zeroHostData + "'; else return 'DIRECT'"
-    res+="}" //end the function
+    res += "false" //end the ||
+    res += ") return 'PROXY " + zeroHostData + "'; else return 'DIRECT'"
+    res += "}" //end the function
     //console.log("pac",ar,res)
     return res;
   }
@@ -243,8 +246,10 @@ function getPacConfig(zeroHostData) {
     mode: "pac_script",
     pacScript: {
       data: createMatches(
-        ZERO_ACCEPTED_TLDS.map((h) => {return "*"+h}).concat("zero") //Proxy "zero" too
-        )
+        ZERO_ACCEPTED_TLDS.map((h) => {
+          return "*" + h
+        }).concat("zero") //Proxy "zero" too
+      )
     }
 
   };
@@ -252,12 +257,16 @@ function getPacConfig(zeroHostData) {
   var pacConfig = {
     mode: "pac_script",
     pacScript: {
-      data:createMatches(
-        ZERO_ACCEPTED_TLDS.map((h) => {return "*"+h})
-          .concat(ZERO_ACCEPTED_HOSTS
-            .map((h) => {return h})
-          )
+      data: createMatches(
+        ZERO_ACCEPTED_TLDS.map((h) => {
+          return "*" + h
+        })
+        .concat(ZERO_ACCEPTED_HOSTS
+          .map((h) => {
+            return h
+          })
         )
+      )
     }
 
   };
@@ -273,7 +282,7 @@ function getPacConfig(zeroHostData) {
   return pacConfigWithLocalHost;
 }
 
-var ZERO_ACCEPTED_TLDS = [/*".zero", */".bit", ".zite"]; // All tlds (beware .zero is now an offical tld - soon optional)
+var ZERO_ACCEPTED_TLDS = [ /*".zero", */ ".bit", ".zite"]; // All tlds (beware .zero is now an offical tld - soon optional)
 var ZERO_ACCEPTED_HOSTS = ["zero", "127.0.0.1:43110", "localhost:43110"]; // All hosts (zero must be included here)
 
 // default settings data - location where your zeroNet is running
