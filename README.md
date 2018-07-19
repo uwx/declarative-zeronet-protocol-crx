@@ -29,4 +29,4 @@ After installing this extension, visit:
 5. Navigate to the directory in which your extension files live, and select it.
 
 ## Planned features
-This extension is not actively developed, but pull requests are welcome. Potential future features include support for the `zero://` protocol and configurable ZeroNet host.
+This extension is not actively developed, but pull requests are welcome. Potential future features include support for the `zero://` protocol, configurable ZeroNet host and configurable replacements (for example, for ZeroNet proxies)
