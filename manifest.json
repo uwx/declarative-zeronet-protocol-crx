@@ -16,11 +16,6 @@
     "default_title": "ZeroNet"
   },
 
-  "options_ui": {
-    "page": "settings/settings.html",
-    "chrome_style": true
-  },
-
   "background": {
     "scripts": ["js/background.js"],
     "persistent": false
