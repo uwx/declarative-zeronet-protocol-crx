@@ -22,7 +22,7 @@ After installing this extension, visit:
 
 ## Installation
 
-1. Download the extension ```git clone https://github.com/uwx/zeronet-protocol-crx.git ```
+1. Download the extension `git clone https://github.com/uwx/zeronet-protocol-crx.git`
 2. Visit chrome://extensions in your browser
 3. Ensure that the Developer Mode checkbox in the top right-hand corner is checked.
 4. Click 'Load unpacked extension…' to pop up a file-selection dialog.
