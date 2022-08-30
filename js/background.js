@@ -35,7 +35,7 @@ const onRequestHosts = {
   actions: [
     new chrome.declarativeWebRequest.RedirectByRegEx({
       from: String.raw`^(https?):\/\/(.*?)(?:\/|$)(.*)`,
-      to: '$1://' + ZERO_HOST + '/$3'
+      to: `$1://${ZERO_HOST}/$3`
     })
   ]
 };
