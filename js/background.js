@@ -22,7 +22,7 @@ const onRequestTlds = {
   actions: [
     new chrome.declarativeWebRequest.RedirectByRegEx({
       from: String.raw`^(?:(http[s]?|ftp):\/)?\/?(([^:\/\s]+)(:[0-9]+)?)(((?:\/\w+)*\/)([\w\-\.]+[^#?\s]+)(.*)?(#[\w\-]+)?)$`, // TODO can prolly simplify this regex
-      to: '$1://' + ZERO_HOST + '/$2$5'
+      to: `$1://${ZERO_HOST}/$2$5`
     })
   ]
 };
